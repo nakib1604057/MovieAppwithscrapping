@@ -1,0 +1,49 @@
+.search_h1 {
+  text-align: center;
+  margin-top: 20%;
+}
+
+body {
+  background-color: white;
+}
+.title {
+  padding-top: 2%;
+  padding-top: 2%;
+  font-family: fantasy;
+  font-weight: 200;
+}
+.date {
+  margin-top: 2%;
+}
+.des {
+  margin-bottom: 1rem;
+  margin-top: 2%;
+  font-size: 0.9rem;
+  font-weight: 400;
+  font-family: inherit;
+}
+.result_h2 {
+  margin-top: 10%;
+}
+.movie_box {
+  margin-top: 2%;
+  margin-bottom: 3%;
+  padding-left: 0px;
+  border: 1px solid rgba(189, 189, 189, 0.3);
+  border-radius: 3px;
+  box-shadow: 0px 0px 12px rgba(189, 189, 189, 0.3);
+  background-color: #ffffff;
+}
+.pad {
+  padding: 0px;
+}
+.movie_des {
+  background: #12162c;
+  color: white;
+  text-align: justify;
+}
+.noimg {
+  text-align: center;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}

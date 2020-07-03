@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/css/main.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2 class="result_h2">Search Result > <%= searchQuery%></h2>
+    </div>
+
+    <div class="container">
+      <% for(var i=0;i< movieNames.length;i++){%>
+      <div class="row movie_box">
+        <div class="col-lg-2 pad">
+          <a href="<%=movieLinks[i]%>"
+            ><img src="<%=movieimages[i]%>" alt="" width="150px" height="180px"
+          /></a>
+        </div>
+        <div class="col-lg-10">
+          <h5 class="title"><%=movieNames[i]%></h5>
+          <h6 class="date"><%=movieDates[i]%></h6>
+          <p class="des"><%=movieDes[i]%></p>
+        </div>
+      </div>
+      <% } %>
+    </div>
+  </body>
+</html>

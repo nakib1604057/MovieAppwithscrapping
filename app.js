@@ -140,5 +140,5 @@ app.get("/movie/:id", async function (req, res) {
   );
 });
 app.listen(4000, () => {
-  console.log("Server started successfully");
+  console.log("Server started successfully1");
 });

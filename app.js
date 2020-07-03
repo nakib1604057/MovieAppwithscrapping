@@ -1,12 +1,13 @@
 const express = require("express");
 const path = require("path");
 const request = require("request");
+const dotenv = require("dotenv");
 const cheerio = require("cheerio");
 const app = express();
 app.set("views", path.join("views"));
 app.set("view engine", "ejs");
 app.use(express.static("include"));
-
+dotenv.config({ path: "./config.env" });
 app.get("/", (req, res) => {
   res.render("search");
 });
@@ -139,6 +140,6 @@ app.get("/movie/:id", async function (req, res) {
     }
   );
 });
-app.listen(4000, () => {
+app.listen(process.env.PORT, () => {
   console.log("Server started successfully1");
 });

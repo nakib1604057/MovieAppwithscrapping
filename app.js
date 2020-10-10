@@ -3,6 +3,7 @@ const path = require("path");
 const request = require("request");
 const dotenv = require("dotenv");
 const cheerio = require("cheerio");
+const { resolve } = require("path");
 const app = express();
 app.set("views", path.join("views"));
 app.set("view engine", "ejs");
@@ -14,6 +15,7 @@ app.get("/", (req, res) => {
 app.get("/search/movie", (req, res) => {
   let searchName = req.query.search;
   // requesting website link for webscrapping
+ 
   request(
     "https://www.themoviedb.org/search?query=" + searchName + "&language=en-US",
     (err, response, html) => {
@@ -69,7 +71,7 @@ app.get("/search/movie", (req, res) => {
   );
 });
 
-app.get("/movie/:id", async function (req, res) {
+app.get("/movie/:id",  (req, res)=> {
   var id = req.params.id;
   request(
     "https://www.themoviedb.org/movie/" + id + "?language=en-US",

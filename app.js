@@ -71,76 +71,101 @@ app.get("/search/movie", (req, res) => {
   );
 });
 
-app.get("/movie/:id",  (req, res)=> {
+app.get("/movie/:id",  async(req, res)=> {
   var id = req.params.id;
-  request(
-    "https://www.themoviedb.org/movie/" + id + "?language=en-US",
-    (err, response, html) => {
-      let noimgpro = [];
-      let noimgchar = [];
-      if (!err && response.statusCode == 200) {
-        var $ = cheerio.load(html);
-        let movietitle = $(
-          "#original_header > div.header_poster_wrapper.false > section > div.title.ott_false > h2 > a"
-        ).text();
-        let movieyear = $(
-          "#original_header > div.header_poster_wrapper.false > section > div.title.ott_false > h2 > span"
-        ).text();
-        let movieimg = $(
-          "#original_header > div.poster_wrapper.false > div > div.image_content.backdrop > img"
-        ).attr("src");
-        
-        
-        let moviedate = $(
-          "#original_header > div.header_poster_wrapper.false > section > div.title.ott_false > div > span.release"
-        ).text();
-        let movietype = $(
-          "#original_header > div.header_poster_wrapper.false > section > div.title.ott_false > div > span.genres"
-        ).text();
-        let movieruntime = $(
-          "#original_header > div.header_poster_wrapper.false > section > div.title.ott_false > div > span.runtime"
-        ).text();
-        let movieuserscore = $(
-          "#original_header > div.header_poster_wrapper.false > section > ul > li.chart > div.consensus.details > div > div"
-        ).attr("data-percent");
-        let movieoverview = $(
-          "#original_header > div.header_poster_wrapper.false > section > div.header_info > div > p"
-        ).text();
-        for (
-          var i = 1;
-          i <=
-          $(
-            "#original_header > div.header_poster_wrapper.false > section > div.header_info > ol li"
-          ).length;
-          i++
-        ) {
-          noimgpro[i] = $(
-            "#original_header > div.header_poster_wrapper.false > section > div.header_info > ol > li:nth-child(" +
-              i +
-              ") > p:nth-child(1) > a"
-          ).text();
-          noimgchar[i] = $(
-            "#original_header > div.header_poster_wrapper.false > section > div.header_info > ol > li:nth-child(" +
-              i +
-              ") > p.character"
-          ).text();
+  function getdata(){
+    return new Promise((resolve,reject)=>{
+      request(
+        "https://www.themoviedb.org/movie/" + id + "?language=en-US",
+        (err, response, html) => {
+          let noimgpro = [];
+          let noimgchar = [];
+          if (!err && response.statusCode == 200) {
+            var $ = cheerio.load(html);
+            let movietitle = $(
+              "#original_header > div.header_poster_wrapper.false > section > div.title.ott_false > h2 > a"
+            ).text();
+            let movieyear = $(
+              "#original_header > div.header_poster_wrapper.false > section > div.title.ott_false > h2 > span"
+            ).text();
+            let movieimg = $(
+              "#original_header > div.poster_wrapper.false > div > div.image_content.backdrop > img"
+            ).attr("src");
+            
+            
+            let moviedate = $(
+              "#original_header > div.header_poster_wrapper.false > section > div.title.ott_false > div > span.release"
+            ).text();
+            let movietype = $(
+              "#original_header > div.header_poster_wrapper.false > section > div.title.ott_false > div > span.genres"
+            ).text();
+            let movieruntime = $(
+              "#original_header > div.header_poster_wrapper.false > section > div.title.ott_false > div > span.runtime"
+            ).text();
+            let movieuserscore = $(
+              "#original_header > div.header_poster_wrapper.false > section > ul > li.chart > div.consensus.details > div > div"
+            ).attr("data-percent");
+            let movieoverview = $(
+              "#original_header > div.header_poster_wrapper.false > section > div.header_info > div > p"
+            ).text();
+            for (
+              var i = 1;
+              i <=
+              $(
+                "#original_header > div.header_poster_wrapper.false > section > div.header_info > ol li"
+              ).length;
+              i++
+            ) {
+              noimgpro[i] = $(
+                "#original_header > div.header_poster_wrapper.false > section > div.header_info > ol > li:nth-child(" +
+                  i +
+                  ") > p:nth-child(1) > a"
+              ).text();
+              noimgchar[i] = $(
+                "#original_header > div.header_poster_wrapper.false > section > div.header_info > ol > li:nth-child(" +
+                  i +
+                  ") > p.character"
+              ).text();
+            }
+            let error=false;
+            if(error){
+              reject();
+            }
+            else{
+              resolve({
+                movietitle: movietitle,
+                movieyear: movieyear,
+                movieimg: movieimg,
+                moviedate: moviedate,
+                movietype: movietype,
+                movieruntime: movieruntime,
+                movieuserscore: movieuserscore,
+                movieoverview: movieoverview,
+                noimgchar: noimgchar,
+                noimgpro: noimgpro,
+              });
+            }
+           
+          }
         }
+      );
+    })
+  }
 
-        res.render("movie", {
-          movietitle: movietitle,
-          movieyear: movieyear,
-          movieimg: movieimg,
-          moviedate: moviedate,
-          movietype: movietype,
-          movieruntime: movieruntime,
-          movieuserscore: movieuserscore,
-          movieoverview: movieoverview,
-          noimgchar: noimgchar,
-          noimgpro: noimgpro,
-        });
-      }
-    }
-  );
+  getdata().then(result=>{
+    res.render('movie',{ movietitle: result.movietitle,
+      movieyear: result.movieyear,
+      movieimg: result.movieimg,
+      moviedate:result.moviedate,
+      movietype:result.movietype,
+      movieruntime: result.movieruntime,
+      movieuserscore: result.movieuserscore,
+      movieoverview: result.movieoverview,
+      noimgchar: result.noimgchar,
+      noimgpro: result.noimgpro,})
+  })
+
+
 });
 app.listen(process.env.PORT, () => {
   console.log("Server started successfully1");

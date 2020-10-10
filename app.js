@@ -88,7 +88,9 @@ app.get("/movie/:id",  (req, res)=> {
         ).text();
         let movieimg = $(
           "#original_header > div.poster_wrapper.false > div > div.image_content.backdrop > img"
-        ).attr("src").replace("_filter(blur)", "");
+        ).attr("src");
+        
+        
         let moviedate = $(
           "#original_header > div.header_poster_wrapper.false > section > div.title.ott_false > div > span.release"
         ).text();
